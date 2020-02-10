@@ -45,6 +45,7 @@ function getArgs () {
         'digibyte',
         'dogecoin',
         'litecoin',
+        'monacoin',
         'qtum',
         'vertcoin',
         'zcash'
@@ -79,7 +80,7 @@ async function makeRequest (url, method, ...params) {
 }
 
 async function getEstimateFee (type, url) {
-  // ok: bitcoin, dash, litecoin, vertcoin
+  // ok: bitcoin, dash, litecoin, monacoin, vertcoin
   // not ok:
   if (['dogecoin', 'zcash', 'bitcoincash', 'bitcoinsv'].includes(type)) return []
 

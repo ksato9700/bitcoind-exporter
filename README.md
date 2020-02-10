@@ -67,6 +67,7 @@ docker run \
 - [x] digibyte
 - [x] dogecoin
 - [x] litecoin
+- [x] monacoin
 - [x] qtum
 - [x] vertcoin
 - [x] zcash
