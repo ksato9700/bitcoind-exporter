@@ -158,6 +158,10 @@ function initParityMetrics (registry, nodeType, nodeURL) {
       gauges.latest.sync.set({ type: 'headers' }, blockchainInfo.headers)
       gauges.latest.sync.set({ type: 'progress' }, blockchainInfo.headers === 0
         ? 0 : parseFloat((blockchainInfo.blocks / blockchainInfo.headers).toFixed(5)))
+
+      /* 'current' and 'highest' are aliases for getting compatiblity with parity-exporter */
+      gauges.latest.sync.set({ type: 'current' }, blockchainInfo.blocks)
+      gauges.latest.sync.set({ type: 'highest' }, blockchainInfo.headers)
     }
     gauges.latest.size.set(blockchainInfo.size_on_disk || 0)
 
