@@ -36,6 +36,7 @@ function getArgs () {
     })
     .option('type', {
       choices: [
+        'c0ban',
         'bitcoin',
         'bitcoincash',
         'bitcoingold',
