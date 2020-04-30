@@ -236,9 +236,9 @@ async function main () {
   process.on('SIGINT', () => process.exit(0))
   process.on('SIGTERM', () => process.exit(0))
 
+  await delay(args.delay) // start delay
   while (true) {
     const ts = Date.now()
-    await delay(args.delay) // start delay
     await promClient.update()
     const interval = Math.max(10, args.interval - (Date.now() - ts))
     await delay(interval)
