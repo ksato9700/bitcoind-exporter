@@ -239,7 +239,12 @@ async function main () {
   await delay(args.delay) // start delay
   while (true) {
     const ts = Date.now()
-    await promClient.update()
+    try {
+      await promClient.update()
+    } catch (err) {
+      logger.error({ message: err.message, stack: err.stack })
+      /* resume */
+    }
     const interval = Math.max(10, args.interval - (Date.now() - ts))
     await delay(interval)
   }
