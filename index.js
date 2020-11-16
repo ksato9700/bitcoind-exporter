@@ -7,7 +7,7 @@ const { Registry, Gauge } = require('prom-client')
 const { hashObject } = require('prom-client/lib/util')
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
-function getArgs () {
+function getArgs() {
   return yargs
     .usage('Usage: $0 [options]')
     .env('BITCOIND_EXPORTER')
@@ -22,7 +22,7 @@ function getArgs () {
       type: 'number'
     })
     .option('listen', {
-      coerce (arg) {
+      coerce(arg) {
         const [hostname, port] = arg.split(':')
         return { hostname, port }
       },
@@ -59,7 +59,7 @@ function getArgs () {
     .argv
 }
 
-async function makeRequest (url, method, ...params) {
+async function makeRequest(url, method, ...params) {
   const res = await fetch(url, {
     method: 'POST',
     body: JSON.stringify({
@@ -80,12 +80,12 @@ async function makeRequest (url, method, ...params) {
   return json.result
 }
 
-async function getEstimateFee (type, url) {
+async function getEstimateFee(type, url) {
   // ok: bitcoin, dash, litecoin, monacoin, vertcoin
   // not ok:
   if (['dogecoin', 'zcash', 'bitcoincash', 'bitcoinsv'].includes(type)) return []
 
-  async function process (target, mode) {
+  async function process(target, mode) {
     let obj = {}
     if (['dash'].includes(type)) { // no mode
       obj = await makeRequest(url, 'estimatesmartfee', target)
@@ -105,7 +105,7 @@ async function getEstimateFee (type, url) {
   return items.filter((item) => typeof item.value === 'number')
 }
 
-function initParityMetrics (registry, nodeType, nodeURL) {
+function initParityMetrics(registry, nodeType, nodeURL) {
   const createGauge = (name, help, labelNames) => new Gauge({ name, help, labelNames, registers: [registry] })
 
   const gauges = {
@@ -216,18 +216,18 @@ function initParityMetrics (registry, nodeType, nodeURL) {
   }
 }
 
-function createPrometheusClient (args) {
+function createPrometheusClient(args) {
   const register = new Registry()
   return {
     update: initParityMetrics(register, args.type, args.node),
-    onRequest (req, res) {
+    onRequest(req, res) {
       res.setHeader('Content-Type', register.contentType)
       res.end(register.metrics())
     }
   }
 }
 
-async function main () {
+async function main() {
   const args = getArgs()
   const promClient = createPrometheusClient(args)
   await polka().get('/metrics', promClient.onRequest).listen(args.listen)
