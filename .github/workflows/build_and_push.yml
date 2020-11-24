@@ -36,7 +36,7 @@ jobs:
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
         run: |
-          echo "${GH_PAT}" | docker login ghcr.io -u peaceiris --password-stdin
+          echo "${GH_PAT}" | docker login ghcr.io -u ksato9700 --password-stdin
 
       - name: Push to GitHub Container Repository (latest)
         run: docker push ${DOCKER_BASE_NAME}:latest
